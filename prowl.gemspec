@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "prowl"
-  s.version = "0.1.0"
+  s.version = "0.1.1"
   s.date = "2009-07-08"
   s.authors = ["August Lilleaas"]
   s.email = "augustlilleaas@gmail.com"
@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
     "lib/prowl/api_key_handler.rb",
     "lib/prowl/http_auth_handler.rb",
     "prowl.gemspec",
-    "RAKEFILE",
+    "Rakefile",
     "README",
     "test/prowl_test.rb"
   ]
