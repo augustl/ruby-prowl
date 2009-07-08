@@ -1,0 +1,40 @@
+     --~~ Prowl ~~--
+     
+     Ruby wrapper for http://prowl.weks.net/.
+     Written by August Lilleaas (http://august.lilleaas.net/).
+     
+     Prowl rocks! It's a webapp and a iPhone app that works
+     together and lets you send push notifications via HTTP
+     to any iPhone that has the prowl app installed.
+     
+          Prowl.send({
+            :application => "World Saving Project Manager",
+            :event => "Canceled",
+            :description => "It sucked, so I canceled it. Sorry :(",
+            :apikey => "abc123def456"
+          })
+
+      The user has given you its API key. That lets you
+      send push notifications to the users iPhone, through
+      the Prowl iPhone app.
+      
+      
+      --~~ Usage ~~--
+      
+      Three required parameters:
+      
+          :application
+          :event
+          :description
+          
+      Other than that, you're free to choose from any of these
+      highly convenient methods.
+      
+      Prowl.send({:apikey => "...", ...})
+      Prowl.send({:username => "...", :password => "...", ...})
+      
+      p = Prowl.new("username", "password")
+      p.send(...)
+      
+      p = Prowl.new("apikey123abc")
+      p.send(...)
