@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "prowl"
   s.has_rdoc = true
   s.summary = "Wrapprer for prowl, http://prowl.weks.net/."
-  s.homepage = "http://github.com/augustl/prowl"
+  s.homepage = "http://prowl.rubyforge.org/"
   s.files = [
     "lib/prowl.rb",
     "lib/prowl/api_key_handler.rb",
