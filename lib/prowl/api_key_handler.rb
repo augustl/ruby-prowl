@@ -23,9 +23,7 @@ class Prowl
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       
       params[:apikey] = @api_key
-      u = uri.request_uri + "?" + params.map {|k, v| "#{k}=#{CGI.escape(v)}"}.join("&")
-      p u
-      request = Net::HTTP::Get.new(u)
+      request = Net::HTTP::Get.new(uri.request_uri + "?" + params.map {|k, v| "#{k}=#{CGI.escape(v)}"}.join("&"))
       response = http.request(request)
       return response.code.to_i
     end
