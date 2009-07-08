@@ -3,6 +3,19 @@
      Ruby wrapper for http://prowl.weks.net/.
      Written by August Lilleaas (http://august.lilleaas.net/).
      
+     
+     --~~ Installation ~~--
+     
+        gem install prowl
+        
+     or
+     
+        gem install augustl-prowl --source=http://gems.github.com/
+        
+     Code available here: http://github.com/augustl/ruby-prowl/tree
+     
+     --~~ About ~~--
+     
      Prowl rocks! It's a webapp and a iPhone app that works
      together and lets you send push notifications via HTTP
      to any iPhone that has the prowl app installed.
