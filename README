@@ -43,8 +43,8 @@
       Other than that, you're free to choose from any of these
       highly convenient methods.
       
-      Prowl.send({:apikey => "...", ...})
-      Prowl.send({:username => "...", :password => "...", ...})
+      Prowl.send("apikey", :application => "Foo", ...)
+      Prowl.send("username", "password", :application => "Foo", ...)
       
       p = Prowl.new("username", "password")
       p.send(...)
