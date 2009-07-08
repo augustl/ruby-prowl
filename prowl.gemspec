@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
     "lib/prowl/api_key_handler.rb",
     "lib/prowl/http_auth_handler.rb",
     "prowl.gemspec",
+    "RAKEFILE",
     "README",
     "test/prowl_test.rb"
   ]
