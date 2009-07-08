@@ -20,11 +20,10 @@
      together and lets you send push notifications via HTTP
      to any iPhone that has the prowl app installed.
      
-          Prowl.send({
+          Prowl.send("api key abc123def456", {
             :application => "World Saving Project Manager",
             :event => "Canceled",
-            :description => "It sucked, so I canceled it. Sorry :(",
-            :apikey => "abc123def456"
+            :description => "It sucked, so I canceled it. Sorry :("
           })
 
       The user has given you its API key. That lets you
