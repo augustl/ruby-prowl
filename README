@@ -39,14 +39,12 @@
           :event
           :description
           
-      Other than that, you're free to choose from any of these
-      highly convenient methods.
+      You can use Prowl.send, or create instances of Prowl
+      manually.
       
-      Prowl.send("apikey", :application => "Foo", ...)
-      Prowl.send("username", "password", :application => "Foo", ...)
-      
-      p = Prowl.new("username", "password")
-      p.send(...)
-      
+      Prowl.add("apikey", :application => "Foo", ...)
+      Prowl.verify("apikey")
+  
       p = Prowl.new("apikey123abc")
-      p.send(...)
+      p.valid?
+      p.add(...)

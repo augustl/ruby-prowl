@@ -2,30 +2,29 @@ require 'cgi'
 require 'net/https'
 require 'uri'
 
-require 'prowl/api_key_handler'
-require 'prowl/http_auth_handler'
 
 class Prowl
-  # new('username', 'password') or new('apikeyhere').
-  def initialize(*args)
-    case args.length
-    when 1 # api key
-      @handler = Prowl::ApiKeyHandler.new(*args)
-    when 2 # username/password
-      @handler = Prowl::HttpAuthHandler.new(*args)
-    else
-      raise ArgumentError
-    end
+  class MissingAPIKey < RuntimeError; end
+  class PriorityOutOfRange < RuntimeError; end
+  
+  API_URL = "https://prowl.weks.net:443/publicapi"
+  PRIORITY_RANGE = -2..2
+  
+  def initialize(api_key)
+    @api_key = api_key
   end
   
-  def send(params)
-    @handler.add(params)
+  def add(params = {})
+    perform("add", params)
+  end
+  
+  def valid?
+    @valid ||= (perform("verify") == 200)
   end
   
   # Utility function that creates an instance and sends a prowl
-  def self.send(*args)
-    params = args.pop
-    new(*args).send(params)
+  def self.add(api_key, params = {})
+    new(api_key).add(params)
   end
   
   # Utility function to verify API keys
@@ -33,39 +32,34 @@ class Prowl
     new(api_key).valid?
   end
   
-  def valid?
-    @handler.valid?
+  private
+  
+  def perform(action, params)
+    if !@api_key
+      raise MissingAPIKey
+    end
+    
+    if params[:priority] && !PRIORITY_RANGE.include?(params[:priority])
+      raise PriorityOutOfRange
+    end
+    
+    params[:apikey] = @api_key
+    
+    uri = URI.parse("#{API_URL}/#{action}")
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    
+    request = Net::HTTP::Get.new(uri.request_uri + "?" + params.map {|k, v| "#{k}=#{CGI.escape(v.to_s)}"}.join("&"))
+    response = http.request(request)
+    return response.code.to_i
   end
 end
 
 # For me and my good friend friend Textmate.
 if __FILE__ == $0
-  puts "Your API key, please."
-  api_key = gets
+  api_key = "change me"
   
-  if api_key
-    api_key.chomp!
-    p Prowl.send(api_key, :application => "Fishes", :event => "silly", :description => "Awwawaw.")
-  end
-  
-  
-  puts "Test verification?"
-  api_key = gets
-  
-  if api_key
-    api_key.chomp!
-    p Prowl.new(api_key).valid?
-  end
-  
-  puts "Your username, please."
-  username = gets.chomp
-  
-  puts "Your password, please."
-  password = gets.chomp
-  
-  if username
-    username.chomp!
-    password.chomp!
-    p Prowl.send(username, password, :application => "Fishes", :event => "silly", :description => "Awwawaw.")
-  end
+  p Prowl.add(api_key, :application => "Fishes", :event => "silly", :description => "Awwawaw.", :priority => 1)
+  p Prowl.new(api_key).valid?
 end
