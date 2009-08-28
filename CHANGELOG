@@ -1,0 +1,5 @@
+v0.1.2
+
+* Removed support for the old HTTP auth based API.
+* Support for most recent API.
+* Renamed `send` to `add`, to avoid conflicts with `Object#send`.
