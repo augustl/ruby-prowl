@@ -22,11 +22,12 @@
      together and lets you send push notifications via HTTP
      to any iPhone that has the prowl app installed.
      
-          Prowl.add("api key abc123def456", {
+          Prowl.add(
+            :apikey => "api key abc123def456",
             :application => "World Saving Project Manager",
             :event => "Canceled",
             :description => "It sucked, so I canceled it. Sorry :("
-          })
+          )
 
       The user has given you its API key. That lets you
       send push notifications to the users iPhone, through
@@ -35,18 +36,19 @@
       
       --~~ Usage ~~--
       
-      Three required parameters:
-      
-          :application
-          :event
-          :description
+      Four required parameters:
+          
+          :apikey (string / array of strings)
+          :application (string)
+          :event (string)
+          :description (string)
           
       You can use Prowl.add, or create instances of Prowl
       manually.
       
-      Prowl.add("apikey", :application => "Foo", ...)
+      Prowl.add(:apikey => "123abc", :application => "Foo", ...)
       Prowl.verify("apikey")
   
-      p = Prowl.new("apikey123abc")
+      p = Prowl.new(:apikey => "apikey123abc", :application => "FooApp")
       p.valid?
-      p.add(...)
+      p.add(:event => "It's valid", ...)

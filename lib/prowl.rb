@@ -5,13 +5,15 @@ require 'uri'
 
 class Prowl
   class MissingAPIKey < RuntimeError; end
+  class TooManyAPIKeys < RuntimeError; end
   class PriorityOutOfRange < RuntimeError; end
   
   API_URL = "https://prowl.weks.net:443/publicapi"
+  MAX_API_KEYS = 5
   PRIORITY_RANGE = -2..2
   
-  def initialize(api_key)
-    @api_key = api_key
+  def initialize(defaults = {})
+    @defaults = defaults
   end
   
   def add(params = {})
@@ -23,27 +25,38 @@ class Prowl
   end
   
   # Utility function that creates an instance and sends a prowl
-  def self.add(api_key, params = {})
-    new(api_key).add(params)
+  def self.add(params = {})
+    new(params).add
   end
   
   # Utility function to verify API keys
-  def self.verify(api_key)
-    new(api_key).valid?
+  def self.verify(apikey)
+    new({:apikey => apikey}).valid?
   end
   
   private
   
-  def perform(action, params)
-    if !@api_key
+  def perform(action, params = {})
+    # Merge the default params with any custom ones
+    params = @defaults.merge(params)
+    
+    if !params[:apikey] || (params[:apikey].is_a?(Array) && params[:apikey].size < 1)
       raise MissingAPIKey
+    end
+    
+    # Raise an exception if we're trying to use more API keys than allowed for this action
+    if params[:apikey].is_a?(Array) && ((action == "verify" && params[:apikey].size > 1) || params[:apikey].size > MAX_API_KEYS)
+      raise TooManyAPIKeys
     end
     
     if params[:priority] && !PRIORITY_RANGE.include?(params[:priority])
       raise PriorityOutOfRange
     end
     
-    params[:apikey] = @api_key
+    # If there are multiple API Keys in an array, merge them into a comma-delimited string
+    if params[:apikey].is_a?(Array)
+      params[:apikey] = params[:apikey].collect{|v| v + ","}.to_s.chop.chop
+    end
     
     uri = URI.parse("#{API_URL}/#{action}")
     http = Net::HTTP.new(uri.host, uri.port)
@@ -60,6 +73,6 @@ end
 if __FILE__ == $0
   api_key = "change me"
   
-  p Prowl.add(api_key, :application => "Fishes", :event => "silly", :description => "Awwawaw.", :priority => 1)
+  p Prowl.add(:apikey => api_key, :application => "Fishes", :event => "silly", :description => "Awwawaw.", :priority => 1)
   p Prowl.new(api_key).valid?
 end
