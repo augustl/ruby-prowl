@@ -20,6 +20,11 @@ class Prowl
     perform("add", params)
   end
   
+  # Modify this instance's defaults
+  def defaults(params)
+    @defaults = @defaults.merge(params)
+  end
+  
   def valid?
     @valid ||= (perform("verify") == 200)
   end
@@ -37,8 +42,12 @@ class Prowl
   private
   
   def perform(action, params = {})
+    puts @defaults
+    puts params
     # Merge the default params with any custom ones
-    params = @defaults.merge(params)
+    unless !@defaults
+      params = @defaults.merge(params)
+    end
     
     if !params[:apikey] || (params[:apikey].is_a?(Array) && params[:apikey].size < 1)
       raise MissingAPIKey
@@ -74,5 +83,5 @@ if __FILE__ == $0
   api_key = "change me"
   
   p Prowl.add(:apikey => api_key, :application => "Fishes", :event => "silly", :description => "Awwawaw.", :priority => 1)
-  p Prowl.new(api_key).valid?
+  p Prowl.verify(api_key)
 end
