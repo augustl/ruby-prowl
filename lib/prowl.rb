@@ -42,8 +42,6 @@ class Prowl
   private
   
   def perform(action, params = {})
-    puts @defaults
-    puts params
     # Merge the default params with any custom ones
     unless !@defaults
       params = @defaults.merge(params)
