@@ -12,7 +12,7 @@ class ProwlTest < Test::Unit::TestCase
   end
   
   def test_invalid_priority
-    assert_raises(Prowl::PriorityOutOfRange) { Prowl.add(:apikey => "foo" :priority => 10)}
+    assert_raises(Prowl::PriorityOutOfRange) { Prowl.add(:apikey => "foo", :priority => 10)}
   end
   
   def test_valid_api_key
