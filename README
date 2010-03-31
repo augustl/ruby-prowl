@@ -10,10 +10,6 @@
      
         gem install prowl
         
-     or
-     
-        gem install augustl-prowl --source=http://gems.github.com/
-        
      Code available here: http://github.com/augustl/ruby-prowl/tree
      
      --~~ About ~~--
