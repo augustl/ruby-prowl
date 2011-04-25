@@ -62,7 +62,7 @@ class Prowl
     
     # If there are multiple API Keys in an array, merge them into a comma-delimited string
     if params[:apikey].is_a?(Array)
-      params[:apikey] = params[:apikey].collect{|v| v + ","}.to_s.chop.chop
+      params[:apikey] = params[:apikey].join(",")
     end
     
     uri = URI.parse("#{API_URL}/#{action}")
