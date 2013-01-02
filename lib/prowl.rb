@@ -8,12 +8,17 @@ class Prowl
   class TooManyAPIKeys < RuntimeError; end
   class PriorityOutOfRange < RuntimeError; end
   
-  API_URL = "https://prowl.weks.net:443/publicapi"
+  API_URL = "https://api.prowlapp.com/publicapi"
   MAX_API_KEYS = 5
   PRIORITY_RANGE = -2..2
   
   def initialize(defaults = {})
     @defaults = defaults
+  end
+
+  def set_proxy(addr, port)
+    @proxy_addr = addr
+    @proxy_port = port
   end
   
   def add(params = {})
@@ -66,9 +71,9 @@ class Prowl
     end
     
     uri = URI.parse("#{API_URL}/#{action}")
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+    proxy = Net::HTTP::Proxy(@proxy_addr, @proxy_port)
+    http = proxy.start(uri.host, :use_ssl => true, :verify_mode => OpenSSL::SSL::VERIFY_NONE)
     
     request = Net::HTTP::Get.new(uri.request_uri + "?" + params.map {|k, v| "#{k}=#{CGI.escape(v.to_s)}"}.join("&"))
     response = http.request(request)
