@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
     "lib/prowl.rb",
     "prowl.gemspec",
     "Rakefile",
-    "README",
+    "README.md",
     "test/prowl_test.rb"
   ]
 end
