@@ -3,7 +3,7 @@ Gem::Specification.new do |s|
   s.version = "0.1.3"
   s.date = "2009-07-08"
   s.authors = ["August Lilleaas"]
-  s.email = "augustlilleaas@gmail.com"
+  s.email = "august@augustl.com"
   s.rubyforge_project = "prowl"
   s.has_rdoc = true
   s.summary = "Wrapprer for prowl, http://prowl.weks.net/."
