@@ -74,8 +74,14 @@ class Prowl
 
     proxy = Net::HTTP::Proxy(@proxy_addr, @proxy_port)
     http = proxy.start(uri.host, :use_ssl => true, :verify_mode => OpenSSL::SSL::VERIFY_NONE)
-    
-    request = Net::HTTP::Get.new(uri.request_uri + "?" + params.map {|k, v| "#{k}=#{CGI.escape(v.to_s)}"}.join("&"))
+
+    if (action == 'add')
+      request = Net::HTTP::Post.new(uri.request_uri)
+      request.set_form_data params
+    else
+      request = Net::HTTP::Get.new(uri.request_uri + "?" + params.map {|k, v| "#{k}=#{CGI.escape(v.to_s)}"}.join("&"))
+    end
+
     response = http.request(request)
     return response.code.to_i
   end
