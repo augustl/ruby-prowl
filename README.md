@@ -50,7 +50,3 @@ p = Prowl.new(:apikey => "apikey123abc", :application => "FooApp")
 p.valid?
 p.add(:event => "It's valid", ...)
 ````
-
-## Authors
-
-- [August Lilleaas](http://august.lilleaas.net/).
